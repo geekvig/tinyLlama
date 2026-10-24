@@ -36,6 +36,23 @@ public:
     int ndim() const { return (int)shape_.size(); }
     int dim(int i) const { return shape_[i]; }
 
+    // ---- raw data access ----
+    float* data() { return data_.data(); }
+    const float* data() const { return data_.data(); }
+
+    // Flat (linear) indexing into the contiguous buffer.
+    float& at_flat(int idx) { return data_[idx]; }
+    float at_flat(int idx) const { return data_[idx]; }
+
+    // Multi-index access, e.g. t.at({b, i, j}) for a 3D tensor.
+    float& at(const std::vector<int>& idx) { return data_[flat_index(idx)]; }
+    float at(const std::vector<int>& idx) const { return data_[flat_index(idx)]; }
+
+    // ---- convenience for the very common 1D/2D cases ----
+    float& at(int i) { return data_[i]; }
+    float& at(int i, int j) { return data_[i * strides_[0] + j * strides_[1]]; }
+    float at(int i, int j) const { return data_[i * strides_[0] + j * strides_[1]]; }
+
     
 private:
     std::vector<float> data_;
@@ -49,7 +66,15 @@ private:
         }
     }
 
-
+    int flat_index(const std::vector<int>& idx) const {
+        if (idx.size() != shape_.size()) {
+            throw std::runtime_error("Tensor::at: index rank mismatch");
+        }
+        int flat = 0;
+        for (size_t i = 0; i < idx.size(); ++i) flat += idx[i] * strides_[i];
+        return flat;
+    }
+    
 
 };
 } // namespace tinyML
