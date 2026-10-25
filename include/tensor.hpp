@@ -6,7 +6,8 @@
 #include <numeric>
 #include <stdexcept>
 
-namespace tinyML {
+
+namespace tinyml {
 
 class Tensor { 
 public:
@@ -74,7 +75,7 @@ private:
         for (size_t i = 0; i < idx.size(); ++i) flat += idx[i] * strides_[i];
         return flat;
     }
-    
+
 
 };
 } // namespace tinyML
