@@ -54,6 +54,16 @@ public:
     float& at(int i, int j) { return data_[i * strides_[0] + j * strides_[1]]; }
     float at(int i, int j) const { return data_[i * strides_[0] + j * strides_[1]]; }
 
+    // Debug-print small tensors.
+    std::string to_string() const {
+        std::ostringstream os;
+        os << "Tensor(shape=[";
+        for (size_t i = 0; i < shape_.size(); ++i) {
+            os << shape_[i] << (i + 1 < shape_.size() ? "," : "");
+        }
+        os << "])";
+        return os.str();
+    }
     
 private:
     std::vector<float> data_;
