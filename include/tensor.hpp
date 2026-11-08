@@ -51,7 +51,7 @@ public:
 
     // ---- convenience for the very common 1D/2D cases ----
     float& at(int i) { return data_[i]; }
-    float& at(int i, int j) { return data_[i * strides_[0] + j * strides_[1]]; }
+    float& at(int i, int j)      { return data_[i * strides_[0] + j * strides_[1]]; }
     float at(int i, int j) const { return data_[i * strides_[0] + j * strides_[1]]; }
 
     // Debug-print small tensors.
